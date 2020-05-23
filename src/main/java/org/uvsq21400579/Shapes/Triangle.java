@@ -27,4 +27,16 @@ public class Triangle extends Shape {
   public void display() {
     System.out.println(this.name + this.first.getCoordinates() + this.second.getCoordinates() + this.third.getCoordinates());
   }
+
+  public Coordinates getFirst() {
+    return first;
+  }
+
+  public Coordinates getSecond() {
+    return second;
+  }
+
+  public Coordinates getThird() {
+    return third;
+  }
 }

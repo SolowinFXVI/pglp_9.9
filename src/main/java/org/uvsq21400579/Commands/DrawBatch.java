@@ -9,10 +9,10 @@ import org.uvsq21400579.Shapes.Batch;
 public class DrawBatch extends DrawShape{
 
   String name;
-  StringArray batchList;
+  String[] batchList;
 
   public DrawBatch(DrawingBoard drawingBoard, String name,
-      StringArray batchList) {
+      String[] batchList) {
     super(drawingBoard);
     this.name = name;
     this.batchList = batchList;
@@ -25,7 +25,7 @@ public class DrawBatch extends DrawShape{
     Batch batch = new Batch(this.name);
     for (Shape shape : list) {
       index += 1;
-      for (String name : batchList.getArray()) {
+      for (String name : batchList) {
         if (name.matches(shape.getName())) {
           batch.addShape(shape);
           list.remove(index);

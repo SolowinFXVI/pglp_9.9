@@ -19,6 +19,10 @@ public class Circle extends Shape {
     this.center.moveBy(x,y);
   }
 
+  public Coordinates getCenter() {
+    return center;
+  }
+
   @Override
   public void display() {
     System.out.println(this.name + this.center.getCoordinates() + radius);

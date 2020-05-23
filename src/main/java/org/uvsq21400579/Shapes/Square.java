@@ -27,4 +27,8 @@ public class Square extends Shape {
   public void display() {
     System.out.println(this.name + this.topLeft.getCoordinates() + this.side);
   }
+
+  public Coordinates getTopLeft() {
+    return topLeft;
+  }
 }

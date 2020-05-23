@@ -4,6 +4,7 @@ import org.uvsq21400579.Coordinates;
 import org.uvsq21400579.Shape;
 
 public class Rectangle extends Shape {
+
   Coordinates first;
   Coordinates second;
 
@@ -22,5 +23,13 @@ public class Rectangle extends Shape {
   @Override
   public void display() {
     System.out.println(this.name + this.first.getCoordinates() + this.second.getCoordinates());
+  }
+
+  public Coordinates getFirst() {
+    return first;
+  }
+
+  public Coordinates getSecond() {
+    return second;
   }
 }

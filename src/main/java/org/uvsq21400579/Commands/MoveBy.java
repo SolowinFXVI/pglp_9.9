@@ -11,7 +11,7 @@ public class MoveBy implements Command {
   int x;
   int y;
 
-  MoveBy(Shape shape, int x, int y) {
+  public MoveBy(Shape shape, int x, int y) {
     this.shape = shape;
     this.x = x;
     this.y = y;
