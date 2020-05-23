@@ -2,6 +2,7 @@ package org.uvsq21400579.Shapes;
 
 import java.net.PortUnreachableException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.uvsq21400579.Shape;
 
@@ -32,5 +33,9 @@ public class Batch  extends Shape {
       shape.display();
     }
     System.out.println("//" + this.name + "\n");
+  }
+
+  public List<Shape> getShapesList(){
+    return Collections.unmodifiableList(this.shapesList);
   }
 }

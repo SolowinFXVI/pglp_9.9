@@ -23,4 +23,8 @@ public class Circle extends Shape {
   public void display() {
     System.out.println(this.name + this.center.getCoordinates() + radius);
   }
+
+  public String getRadius() {
+    return String.valueOf(this.radius);
+  }
 }

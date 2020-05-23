@@ -5,6 +5,7 @@ import org.uvsq21400579.Shape;
 
 public class Square extends Shape {
   Coordinates topLeft;
+
   int side;
 
   public Square(String name, Coordinates topLeft, int side) {
@@ -13,6 +14,9 @@ public class Square extends Shape {
     this.side = side;
   }
 
+  public String getSide() {
+    return String.valueOf(side);
+  }
 
   @Override
   public void moveBy(int x, int y) {

@@ -4,7 +4,7 @@ public class Coordinates {
   private int x;
   private int y;
 
-  Coordinates(int x, int y){
+  public Coordinates(int x, int y){
     this.x = x;
     this.y =y;
   }
@@ -12,6 +12,14 @@ public class Coordinates {
   public void moveBy(int x, int y){
     this.x = this.x + x;
     this.y = this.y + y;
+  }
+
+  public String getX() {
+    return String.valueOf(x);
+  }
+
+  public String getY() {
+    return String.valueOf(y);
   }
 
   public String getCoordinates(){
