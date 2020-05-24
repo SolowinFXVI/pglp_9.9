@@ -64,59 +64,39 @@ public class DrawingTUI {
 
   Command moveByCommand(String input){
     Command command = null;
-
-    System.out.println("Move Detected");
-
     String shapeName = input.substring(input.indexOf("(") + 1, input.indexOf(","));
-    System.out.println("shapeName : "+ shapeName);
     int x = Integer.parseInt(input.substring(input.lastIndexOf("(")+1, input.lastIndexOf(",")));
-    System.out.println("moveX : "+ x);
     int y = Integer.parseInt(input.substring(input.lastIndexOf(",")+1, input.indexOf(")")));
-    System.out.println("moveY : "+ y);
     for(Shape shapes : drawingBoard.getShapeList()){
       if(shapes.getName().contentEquals(shapeName)){
-        command = new MoveBy((Shape) shapes, x, y);
+        command = new MoveBy(shapes, x, y);
       }
     }
     return command;
   }
 
   Command saveCommand(String input){
-
-    System.out.println("Save Detected");
-
     this.drawingBoard.name = input.substring(input.indexOf("(") + 1, input.indexOf(")"));
     return new Save(this.drawingBoard);
   }
 
   Command drawBatch(String input){
-
-    System.out.println("Batch Detected");
-
     String groupName = input.substring(input.indexOf("(") + 1, input.indexOf(","));
     String[] groupMembers = input.substring(input.lastIndexOf("(") + 1, input.indexOf(")")).split(",");
     return new DrawBatch(this.drawingBoard, groupName, groupMembers);
   }
 
   Command delete(String input){
-
-    System.out.println("delete Detected");
-
     String shapeName = input.substring(input.indexOf("(") + 1 , input.indexOf(")"));
     return new Delete(shapeName, this.drawingBoard);
   }
 
   Load load(String input){
-
-    System.out.println("load Detected");
-
     String name = input.substring(input.indexOf("(") + 1, input.indexOf(")"));
-    Load load = new Load(name, this);
-    return load;
+    return new Load(name, this);
   }
 
   Command quit(){
-    System.out.println("quit Detected");
     return new Quit();
   }
 
@@ -124,10 +104,7 @@ public class DrawingTUI {
     this.drawingBoard = drawingBoard;
   }
 
-  Command drawShape(String input){
-
-    System.out.println("DrawShape Detected");
-
+  Command drawShape(String input) {
     Command command = null;
     String[] params = input.split("=");
     String shapeName = input.substring(0, input.indexOf("="));
@@ -148,9 +125,6 @@ public class DrawingTUI {
   }
 
   private Command drawSquare(String input, String shapeName) {
-
-    System.out.println("draw square Detected");
-
     String[] params = input.split(",");
     int x = Integer.parseInt(params[0].substring(params[0].lastIndexOf("(") + 1));
     int y = Integer.parseInt(params[1].substring(0, params[1].lastIndexOf(")")));
@@ -159,10 +133,6 @@ public class DrawingTUI {
   }
 
   private Command drawCircle(String input, String shapeName) {
-
-    System.out.println("draw Circle Detected");
-
-    String[] params = input.split(",");
     int x = Integer.parseInt(input.substring(input.lastIndexOf("(") + 1, input.indexOf(",")));
     int y = Integer.parseInt(input.substring(input.indexOf(",") + 1, input.indexOf(")")));
     int radius = Integer.parseInt(input.substring(input.lastIndexOf(",")+1, input.lastIndexOf(")")));
@@ -170,16 +140,10 @@ public class DrawingTUI {
   }
 
   private Command drawRectangle(String input, String shapeName) {//TODO
-
-    System.out.println("draw Rectangle Detected");
-
     return null;
   }
 
   private Command drawTriangle(String input, String shapeName) { //TODO
-
-    System.out.println("draw triangle Detected");
-
     return null;
   }
 

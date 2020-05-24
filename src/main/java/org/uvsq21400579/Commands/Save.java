@@ -6,7 +6,7 @@ import org.uvsq21400579.DrawingBoard;
 
 public class Save implements Command {
 
-  private DrawingBoard drawingBoard;
+  private final DrawingBoard drawingBoard;
 
   public Save(DrawingBoard drawingBoard) {
     this.drawingBoard = drawingBoard;

@@ -3,6 +3,7 @@ package org.uvsq21400579.Shapes;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import org.uvsq21400579.DAO;
 import org.uvsq21400579.Shape;
@@ -33,7 +34,7 @@ public class BatchDAO extends DAO<Batch> {
       for(Shape shapes :list ){
         if(shapes instanceof Square){
           dao = new SquareDAO();
-          dao.create((Square) shapes);
+          dao.create(shapes);
           insertSquare.setString(1, object.name);
           insertSquare.setString(2, shapes.name);
           insertSquare.setString(3, "SQUARE");
@@ -44,7 +45,7 @@ public class BatchDAO extends DAO<Batch> {
         }
         else if(shapes instanceof Circle){
           dao = new CircleDAO();
-          dao.create((Circle) shapes);
+          dao.create( shapes);
           insertCircle.setString(1, object.name);
           insertCircle.setString(2, shapes.name);
           insertCircle.setString(3, "CIRCLE");
@@ -55,7 +56,7 @@ public class BatchDAO extends DAO<Batch> {
         }
         else if(shapes instanceof Triangle){
           dao = new TriangleDAO();
-          dao.create((Triangle) shapes);
+          dao.create( shapes);
           insertTriangle.setString(1, object.name);
           insertTriangle.setString(2, shapes.name);
           insertTriangle.setString(3, "TRIANGLE");
@@ -69,7 +70,7 @@ public class BatchDAO extends DAO<Batch> {
         }
         else if(shapes instanceof  Rectangle){
           dao = new RectangleDAO();
-          dao.create((Rectangle) shapes);
+          dao.create( shapes);
           insertRectangle.setString(1, object.name);
           insertRectangle.setString(2, shapes.name);
           insertRectangle.setString(3, "RECTANGLE");
@@ -81,13 +82,15 @@ public class BatchDAO extends DAO<Batch> {
         }
         else if(shapes instanceof Batch){
           dao = new BatchDAO();
-          dao.create((Batch) shapes);
+          dao.create( shapes);
           insertBatchception.setString(1, object.name);
           insertBatchception.setString(2, shapes.name);
           insertBatchception.setString(3,"BATCH");
           insertBatchception.executeUpdate();
         }
       }
+    } catch (SQLIntegrityConstraintViolationException e){
+      System.out.println("Shape already exists ignoring");
     } catch (SQLException throwables) {
       throwables.printStackTrace();
     }
@@ -101,18 +104,10 @@ public class BatchDAO extends DAO<Batch> {
     DAO dao;
     String findBatchString = "SELECT * FROM BATCH WHERE BATCH.BATCHNAME = ?";
     String findShapesString = "SELECT * FROM BATCHMEMBERS WHERE BATCHMEMBERS.BATCHNAME = ?";
-    String findSquareString = "SELECT * FROM SQUARE WHERE SQUARE.NAME = ?";
-    String findCircleString = "SELECT * FROM CIRCLE WHERE CIRCLE.NAME = ?";
-    String findTriangleString = "SELECT * FROM TRIANGLE WHERE TRIANGLE.NAME = ?";
-    String findRectangleString = "SELECT * FROM RECTANGLE WHERE RECTANGLE.NAME = ?";
     this.connect();
     try(
         PreparedStatement findBatch = this.connection.prepareStatement(findBatchString);
-        PreparedStatement findShapes = this.connection.prepareStatement(findShapesString);
-        /*PreparedStatement findSquare = this.connection.prepareStatement(findSquareString);
-        PreparedStatement findCircle = this.connection.prepareStatement(findCircleString);
-        PreparedStatement findTriangle = this.connection.prepareStatement(findTriangleString);
-        PreparedStatement findRectangle = this.connection.prepareStatement(findRectangleString)*/
+        PreparedStatement findShapes = this.connection.prepareStatement(findShapesString)
         ) {
       findBatch.setString(1, key);
       findShapes.setString(1,key);
@@ -123,12 +118,8 @@ public class BatchDAO extends DAO<Batch> {
       }
       while (resultSetShapes.next()){
         if(resultSetShapes.getString("SHAPE").equals("SQUARE")){
-          /*findSquare.setString(1, resultSetShapes.getString("NAME"));
-          ResultSet resultFindSquare = findSquare.executeQuery();
-          if(resultFindSquare.next()){*/
-            dao = new SquareDAO();
-            batch.addShape((Square) dao.find(resultSetShapes.getString("NAME")));
-          //}
+          dao = new SquareDAO();
+          batch.addShape((Square) dao.find(resultSetShapes.getString("NAME")));
         }
         if(resultSetShapes.getString("SHAPE").equals("CIRCLE")){
           dao = new CircleDAO();
@@ -146,7 +137,6 @@ public class BatchDAO extends DAO<Batch> {
           dao = new BatchDAO();
           batch.addShape((Batch) dao.find(resultSetShapes.getString("NAME")));
         }
-
       }
     } catch (SQLException throwables) {
       throwables.printStackTrace();
@@ -162,7 +152,7 @@ public class BatchDAO extends DAO<Batch> {
       this.connect();
       try(
           PreparedStatement deleteMembers = this.connection.prepareStatement(deleteBatchMemberString);
-          PreparedStatement delete = this.connection.prepareStatement(deleteString);
+          PreparedStatement delete = this.connection.prepareStatement(deleteString)
           ) {
         deleteMembers.setString(1,key);
         deleteMembers.executeUpdate();

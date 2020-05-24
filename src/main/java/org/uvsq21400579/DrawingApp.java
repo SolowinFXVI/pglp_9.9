@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DrawingApp {
-  private DrawingTUI drawingTUI;
+  private final DrawingTUI drawingTUI;
   private Command command;
   private Connection connection;
 

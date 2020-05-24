@@ -3,6 +3,7 @@ package org.uvsq21400579.Shapes;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import org.uvsq21400579.Coordinates;
 import org.uvsq21400579.DAO;
 
@@ -20,6 +21,8 @@ public class CircleDAO extends DAO<Circle> {
       insertCircle.setString(3, object.center.getY());
       insertCircle.setString(4, object.getRadius());
       insertCircle.executeUpdate();
+    } catch (SQLIntegrityConstraintViolationException e){
+      System.out.println("Shape already exists ignoring");
     } catch (SQLException throwables) {
       throwables.printStackTrace();
     }
@@ -54,7 +57,7 @@ public class CircleDAO extends DAO<Circle> {
     String deleteCircleString = "DELETE FROM CIRCLE WHERE CIRCLE.NAME = ?";
     this.connect();
     try (
-        PreparedStatement deleteCircle = this.connection.prepareStatement(deleteCircleString);
+        PreparedStatement deleteCircle = this.connection.prepareStatement(deleteCircleString)
         ) {
         deleteCircle.setString(1, key);
         deleteCircle.executeUpdate();

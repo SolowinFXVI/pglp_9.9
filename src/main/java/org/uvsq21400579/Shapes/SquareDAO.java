@@ -21,11 +21,9 @@ public class SquareDAO extends DAO<Square> {
       insertSquare.setString(3, object.topLeft.getY());
       insertSquare.setString(4, object.getSide());
       insertSquare.executeUpdate();
-    }
-    catch (SQLIntegrityConstraintViolationException e){
+    } catch (SQLIntegrityConstraintViolationException e){
       System.out.println("Shape already exists ignoring");
-    }
-    catch (SQLException throwables) {
+    } catch (SQLException throwables) {
       throwables.printStackTrace();
     }
     this.disconnect();

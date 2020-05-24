@@ -2,7 +2,6 @@ package org.uvsq21400579.Commands;
 
 import org.uvsq21400579.Command;
 import org.uvsq21400579.DAOFactory;
-import org.uvsq21400579.DrawingBoard;
 import org.uvsq21400579.DrawingTUI;
 
 public class Load implements Command {

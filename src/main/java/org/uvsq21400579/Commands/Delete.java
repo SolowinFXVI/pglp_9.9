@@ -17,10 +17,10 @@ public class Delete implements Command {
 
   @Override
   public void execute() { //TODO BROKEN
-    List<Shape> list = this.drawingBoard.getShapeList();
-    for(int i = 0; i < list.size(); i++){
-      if(list.get(i).getName().equals(name)){
-        list.remove(i);
+    List<Shape> shapeList = this.drawingBoard.getShapeList();
+    for(int i = 0; i < shapeList.size(); i++){
+      if(shapeList.get(i).getName().equals(name)){
+        shapeList.remove(i);
       }
     }
   }

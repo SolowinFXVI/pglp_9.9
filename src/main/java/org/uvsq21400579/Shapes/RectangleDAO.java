@@ -3,6 +3,7 @@ package org.uvsq21400579.Shapes;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import org.uvsq21400579.Coordinates;
 import org.uvsq21400579.DAO;
 
@@ -24,6 +25,8 @@ public class RectangleDAO extends DAO<Rectangle> {
       insertRectangle.setString(4, object.second.getX());
       insertRectangle.setString(5, object.second.getY());
       insertRectangle.executeUpdate();
+    } catch (SQLIntegrityConstraintViolationException e){
+      System.out.println("Shape already exists ignoring");
     } catch (SQLException throwables) {
       throwables.printStackTrace();
     }

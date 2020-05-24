@@ -1,7 +1,5 @@
 package org.uvsq21400579.Commands;
 
-import com.sun.xml.internal.fastinfoset.util.StringArray;
-import java.util.ArrayList;
 import java.util.List;
 import org.uvsq21400579.DrawingBoard;
 import org.uvsq21400579.Shape;

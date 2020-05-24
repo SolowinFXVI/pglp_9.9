@@ -17,12 +17,6 @@ public class MoveBy implements Command {
     this.y = y;
   }
 
-  MoveBy(Batch batch, int x, int y){
-    this.batch = batch;
-    this.x = x;
-    this.y = y;
-  }
-
   @Override
   public void execute() {
     if(this.shape != null) {

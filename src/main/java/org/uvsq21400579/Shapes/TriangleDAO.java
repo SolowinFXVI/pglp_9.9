@@ -59,7 +59,7 @@ public class TriangleDAO extends DAO<Triangle> {
     String deleteTriangleString = "DELETE FROM TRIANGLE WHERE TRIANGLE.NAME = ?";
     this.connect();
     try(
-        PreparedStatement deleteTriangle = this.connection.prepareStatement(deleteTriangleString);
+        PreparedStatement deleteTriangle = this.connection.prepareStatement(deleteTriangleString)
     ){
       deleteTriangle.setString(1, key);
       deleteTriangle.executeUpdate();

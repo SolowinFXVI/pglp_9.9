@@ -43,7 +43,7 @@ public class DrawingBoardDAO extends DAO<DrawingBoard> {
         if(shapes instanceof Square){
             try {
               dao = new SquareDAO();
-              dao.create((Square) shapes);
+              dao.create( shapes);
               insertSquareDrawingMembers.setString(1, object.name);
               insertSquareDrawingMembers.setString(2, "SQUARE");
               insertSquareDrawingMembers.setString(3, shapes.name);
@@ -55,7 +55,7 @@ public class DrawingBoardDAO extends DAO<DrawingBoard> {
         if(shapes instanceof Circle){
           try {
             dao = new CircleDAO();
-            dao.create((Circle) shapes);
+            dao.create( shapes);
             insertCircleDrawingMembers.setString(1, object.name);
             insertCircleDrawingMembers.setString(2, "CIRCLE");
             insertCircleDrawingMembers.setString(3, shapes.name);
@@ -67,7 +67,7 @@ public class DrawingBoardDAO extends DAO<DrawingBoard> {
         if(shapes instanceof Triangle){
           try {
             dao = new TriangleDAO();
-            dao.create((Triangle) shapes);
+            dao.create( shapes);
             insertTriangleDrawingMembers.setString(1, object.name);
             insertTriangleDrawingMembers.setString(2, "TRIANGLE");
             insertTriangleDrawingMembers.setString(3, shapes.name);
@@ -79,7 +79,7 @@ public class DrawingBoardDAO extends DAO<DrawingBoard> {
         if(shapes instanceof Rectangle){
           try {
             dao = new RectangleDAO();
-            dao.create((Rectangle) shapes);
+            dao.create(shapes);
             insertRectangleDrawingMembers.setString(1, object.name);
             insertRectangleDrawingMembers.setString(2, "RECTANGLE");
             insertRectangleDrawingMembers.setString(3, shapes.name);
@@ -162,12 +162,12 @@ public class DrawingBoardDAO extends DAO<DrawingBoard> {
     this.connect();
     try(
         PreparedStatement deleteDrawingBoardMembers = this.connection.prepareStatement(deleteDrawingBoardMembersString);
-        PreparedStatement deleteDrawinBoard = this.connection.prepareStatement(deleteDrawingBoardString)
+        PreparedStatement deleteDrawingBoard = this.connection.prepareStatement(deleteDrawingBoardString)
         ) {
       deleteDrawingBoardMembers.setString(1,key);
       deleteDrawingBoardMembers.executeUpdate();
-      deleteDrawinBoard.setString(1,key);
-      deleteDrawinBoard.executeUpdate();
+      deleteDrawingBoard.setString(1,key);
+      deleteDrawingBoard.executeUpdate();
     } catch (SQLException throwables) {
       throwables.printStackTrace();
     }

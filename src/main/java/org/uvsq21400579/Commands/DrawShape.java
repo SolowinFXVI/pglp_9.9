@@ -9,6 +9,4 @@ public abstract class DrawShape implements Command {
   public DrawShape(DrawingBoard drawingBoard) {
     this.drawingBoard = drawingBoard;
   }
-
-
 }
