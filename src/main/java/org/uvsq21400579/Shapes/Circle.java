@@ -31,7 +31,8 @@ public class Circle extends Shape {
 
   @Override
   public void display() {
-    System.out.println(this.name + this.center.getCoordinates() + radius);
+    System.out.println("Circle : " + this.name + " (center :" + this.center.getCoordinates()
+        + ", radius :" + radius + ")");
   }
 
   public String getRadius() {

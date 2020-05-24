@@ -4,7 +4,7 @@ import org.uvsq21400579.Command;
 import org.uvsq21400579.DAOFactory;
 import org.uvsq21400579.DrawingTUI;
 
-public class Load implements Command {
+public class Load implements Command { //TODO BROKEN
 
   DrawingTUI drawingTUI;
   String name;

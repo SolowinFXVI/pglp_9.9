@@ -28,7 +28,8 @@ public class Rectangle extends Shape {
 
   @Override
   public void display() {
-    System.out.println(this.name + this.first.getCoordinates() + this.second.getCoordinates());
+    System.out.println("Rectangle : " + this.name + " (coord1 : " + this.first.getCoordinates()
+        + ", coord2 : " + this.second.getCoordinates() + ")");
   }
 
   public Coordinates getFirst() {

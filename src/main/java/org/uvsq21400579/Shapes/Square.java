@@ -31,7 +31,8 @@ public class Square extends Shape {
 
   @Override
   public void display() {
-    System.out.println(this.name + this.topLeft.getCoordinates() + this.side);
+    System.out.println("Square : " + this.name + " (top-left :" + this.topLeft.getCoordinates()
+        + ", side :" + side + ")");
   }
 
   public Coordinates getTopLeft() {

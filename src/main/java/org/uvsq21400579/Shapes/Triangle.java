@@ -32,8 +32,9 @@ public class Triangle extends Shape {
 
   @Override
   public void display() {
-    System.out.println(this.name + this.first.getCoordinates() + this.second.getCoordinates()
-        + this.third.getCoordinates());
+    System.out.println("Triangle : " + this.name + " (first : " + this.first.getCoordinates()
+        + ", second : " + this.second.getCoordinates() + ", third : "
+        + this.third.getCoordinates() + ")");
   }
 
   public Coordinates getFirst() {

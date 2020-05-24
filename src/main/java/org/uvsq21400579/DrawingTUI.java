@@ -16,10 +16,18 @@ public class DrawingTUI {
 
   Scanner scanner;
   DrawingBoard drawingBoard;
-  DAO dao;
+
+  /**
+   * DrawingTUI constructor.
+   */
+  public DrawingTUI() {
+    this.scanner = new Scanner(System.in, "UTF-8");
+    this.drawingBoard = new DrawingBoard("Main");
+  }
 
   /**
    * Command pattern nextCommand.
+   * Selects the next command base on user input.
    * @return Command.
    */
   public Command nextCommand() {
@@ -37,7 +45,8 @@ public class DrawingTUI {
       if (commandString.matches("move") || commandString.matches("Move")) {
         command = moveByCommand(input);
       } else if (commandString.matches("drawBatch") || commandString.matches("Batch")
-          || commandString.matches("group") || commandString.matches("Group")) {
+          || commandString.matches("group") || commandString.matches("Group")
+          || commandString.matches("batch")) {
         command = drawBatch(input);
       } else if (commandString.matches("delete") || commandString.matches("Delete")) {
         command = delete(input);
@@ -50,7 +59,7 @@ public class DrawingTUI {
       } else if (input.contains("=")) {
         command = drawShape(input);
       }
-    } catch (IllegalStateException e) {
+    } catch (Exception e) {
       System.out.println("Please input correct syntax");
     }
     return command;
@@ -134,23 +143,17 @@ public class DrawingTUI {
     return new DrawCircle(this.drawingBoard, shapeName, new Coordinates(x,y), radius);
   }
 
-  private Command drawRectangle(String input, String shapeName) { //TODO
-    System.out.println("Rectangle detected");
+  private Command drawRectangle(String input, String shapeName) {
     String[] params = input.split(",");
     int first_x = Integer.parseInt(params[0].substring(params[0].lastIndexOf("(") + 1));
-    System.out.println("first x : " + first_x);
     int first_y = Integer.parseInt(params[1].substring(0,params[1].lastIndexOf(")")));
-    System.out.println("first y : " + first_y);
     int second_x = Integer.parseInt(params[2].substring(params[2].lastIndexOf("(") + 1));
-    System.out.println("second x : " + second_x);
     int second_y = Integer.parseInt(params[3].substring(0,params[3].lastIndexOf(")") - 1));
-    System.out.println("second y : " + second_y);
     return new DrawRectangle(this.drawingBoard, shapeName,
         new Coordinates(first_x, first_y), new Coordinates(second_x, second_y));
   }
 
-  private Command drawTriangle(String input, String shapeName) { //TODO
-    System.out.println("Triangle detected");
+  private Command drawTriangle(String input, String shapeName) {
     String[] params = input.split(",");
     int first_x = Integer.parseInt(params[0].substring(params[0].lastIndexOf("(") + 1));
     int first_y = Integer.parseInt(params[1].substring(0,params[1].lastIndexOf(")")));

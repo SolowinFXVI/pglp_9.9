@@ -76,7 +76,7 @@ public class DrawingApp {
       try {
         command.execute();
       } catch (NullPointerException e) {
-        System.out.println("####");//TODO
+        System.out.println("Invalid Syntax");//TODO
       }
       this.drawingTUI.displayDrawingBoard();
     }
