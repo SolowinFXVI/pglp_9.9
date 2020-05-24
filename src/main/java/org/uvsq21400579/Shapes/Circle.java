@@ -8,10 +8,16 @@ public class Circle extends Shape {
   Coordinates center;
   int radius;
 
+  /**
+   * A circle is defined by a Name, a Center and a Radius.
+   * @param name .
+   * @param center .
+   * @param radius .
+   */
   public Circle(String name, Coordinates center, int radius) {
     super(name);
     this.center = center;
-    this.radius =radius;
+    this.radius = radius;
   }
 
   @Override

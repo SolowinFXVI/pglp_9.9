@@ -8,6 +8,12 @@ public class Square extends Shape {
 
   int side;
 
+  /**
+   * A Square is defined by one Coordinate, top left in our case, and a side length.
+   * @param name .
+   * @param topLeft .
+   * @param side .
+   */
   public Square(String name, Coordinates topLeft, int side) {
     super(name);
     this.topLeft = topLeft;

@@ -4,12 +4,20 @@ import org.uvsq21400579.Coordinates;
 import org.uvsq21400579.DrawingBoard;
 import org.uvsq21400579.Shapes.Triangle;
 
-public class DrawTriangle extends DrawShape{
+public class DrawTriangle extends DrawShape {
   String name;
   Coordinates first;
   Coordinates second;
   Coordinates third;
 
+  /**
+   * DrawTriangle Constructor
+   * @param drawingBoard .
+   * @param name .
+   * @param first .
+   * @param second .
+   * @param third .
+   */
   public DrawTriangle(DrawingBoard drawingBoard, String name, Coordinates first,
       Coordinates second, Coordinates third) {
     super(drawingBoard);

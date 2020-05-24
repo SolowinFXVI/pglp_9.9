@@ -4,12 +4,19 @@ import org.uvsq21400579.Coordinates;
 import org.uvsq21400579.DrawingBoard;
 import org.uvsq21400579.Shapes.Circle;
 
-public class DrawCircle extends DrawShape{
+public class DrawCircle extends DrawShape {
 
   String name;
   Coordinates coordinates;
   int radius;
 
+  /**
+   * DrawCircle Constructor.
+   * @param drawingBoard .
+   * @param name .
+   * @param coordinates .
+   * @param radius .
+   */
   public DrawCircle(DrawingBoard drawingBoard, String name,
       Coordinates coordinates, int radius) {
     super(drawingBoard);

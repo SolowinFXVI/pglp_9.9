@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public abstract class DAO<T>{
+public abstract class DAO<T> {
 
   public Connection connection = null;
 
@@ -17,8 +17,11 @@ public abstract class DAO<T>{
 
   Statement statement = null;
 
+  /**
+   * Connect to the embedded database.
+   */
   public void connect() {
-    try{
+    try {
       Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
       connection = DriverManager.getConnection("jdbc:derby:drawingAppDB");
     } catch (ClassNotFoundException | SQLException e) {
@@ -26,6 +29,9 @@ public abstract class DAO<T>{
     }
   }
 
+  /**
+   * Disconnect from the database.
+   */
   public void disconnect() {
     try {
       connection.close();

@@ -11,17 +11,18 @@ public class SquareDAO extends DAO<Square> {
 
   @Override
   public Square create(Square object) {
-    String insertSquareString = "INSERT INTO SQUARE(NAME, FIRST_X, FIRST_Y, SIDE) VALUES(?, ?, ?, ?)";
+    String insertSquareString = "INSERT INTO SQUARE(NAME, FIRST_X, FIRST_Y, SIDE) "
+        + "VALUES(?, ?, ?, ?)";
     this.connect();
     try (
         PreparedStatement insertSquare = this.connection.prepareStatement(insertSquareString)
-        ) {
+    ) {
       insertSquare.setString(1, object.name);
       insertSquare.setString(2, object.topLeft.getX());
       insertSquare.setString(3, object.topLeft.getY());
       insertSquare.setString(4, object.getSide());
       insertSquare.executeUpdate();
-    } catch (SQLIntegrityConstraintViolationException e){
+    } catch (SQLIntegrityConstraintViolationException e) {
       System.out.println("Shape already exists ignoring");
     } catch (SQLException throwables) {
       throwables.printStackTrace();
@@ -35,9 +36,9 @@ public class SquareDAO extends DAO<Square> {
     Square square = null;
     String findSquareString = "SELECT * FROM SQUARE WHERE SQUARE.NAME= ?";
     this.connect();
-    try(
+    try (
         PreparedStatement findSquare = this.connection.prepareStatement(findSquareString)
-        ) {
+    ) {
       findSquare.setString(1, key);
       ResultSet resultSet = findSquare.executeQuery();
       if (resultSet.next()) {
@@ -56,11 +57,11 @@ public class SquareDAO extends DAO<Square> {
   public void delete(String key) {
     String deleteSquareString = "DELETE FROM SQUARE WHERE SQUARE.NAME = ?";
     this.connect();
-    try(
+    try (
         PreparedStatement deleteSquare = this.connection.prepareStatement(deleteSquareString)
-        ){
-        deleteSquare.setString(1, key);
-        deleteSquare.executeUpdate();
+    ) {
+      deleteSquare.setString(1, key);
+      deleteSquare.executeUpdate();
     } catch (SQLException throwables) {
       throwables.printStackTrace();
     }

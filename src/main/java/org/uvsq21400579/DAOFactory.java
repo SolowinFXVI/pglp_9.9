@@ -13,27 +13,27 @@ import org.uvsq21400579.Shapes.TriangleDAO;
 
 public class DAOFactory {
 
-  public static DAO<Square> getSquareDAO(){
+  public static DAO<Square> getSquareDAO() {
     return new SquareDAO();
   }
 
-  public static DAO<Circle> getCircleDAO(){
+  public static DAO<Circle> getCircleDAO() {
     return new CircleDAO();
   }
 
-  public static DAO<Triangle> getTriangleDAO(){
+  public static DAO<Triangle> getTriangleDAO() {
     return new TriangleDAO();
   }
 
-  public static DAO<Rectangle> getRectangleDAO(){
+  public static DAO<Rectangle> getRectangleDAO() {
     return new RectangleDAO();
   }
 
-  public static DAO<Batch> getBatchDAO(){
+  public static DAO<Batch> getBatchDAO() {
     return new BatchDAO();
   }
 
-  public static DAO<DrawingBoard> getDrawingBoardDAO(){
+  public static DAO<DrawingBoard> getDrawingBoardDAO() {
     return new DrawingBoardDAO();
   }
 

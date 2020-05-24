@@ -13,15 +13,15 @@ public class DrawingBoard {
     this.shapeList = new ArrayList<>();
   }
 
-  public List<Shape> getShapeList(){
+  public List<Shape> getShapeList() {
     return this.shapeList;
   }
 
-  public String getName(){
+  public String getName() {
     return this.name;
   }
 
-  public void addShape(Shape shape){
+  public void addShape(Shape shape) {
     this.shapeList.add(shape);
   }
 

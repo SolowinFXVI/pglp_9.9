@@ -14,27 +14,27 @@ public class Batch  extends Shape {
     shapesList = new ArrayList<>();
   }
 
-  public void addShape(Shape shape){
+  public void addShape(Shape shape) {
     this.shapesList.add(shape);
   }
 
   @Override
   public void moveBy(int x, int y) {
-    for (Shape shape : shapesList){
+    for (Shape shape : shapesList) {
       shape.moveBy(x,y);
     }
   }
 
   @Override
   public void display() {
-    System.out.println("\n"+this.name);
-    for(Shape shape : shapesList){
+    System.out.println("\n" + this.name);
+    for(Shape shape : shapesList) {
       shape.display();
     }
     System.out.println("//" + this.name + "\n");
   }
 
-  public List<Shape> getShapesList(){
+  public List<Shape> getShapesList() {
     return Collections.unmodifiableList(this.shapesList);
   }
 }

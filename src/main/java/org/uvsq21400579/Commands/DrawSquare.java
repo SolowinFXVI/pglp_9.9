@@ -9,6 +9,13 @@ public class DrawSquare extends DrawShape {
   Coordinates coordinates;
   int side;
 
+  /**
+   * DrawSquare Constructor.
+   * @param drawingBoard .
+   * @param name .
+   * @param coordinates .
+   * @param side .
+   */
   public DrawSquare(DrawingBoard drawingBoard, String name, Coordinates coordinates, int side) {
     super(drawingBoard);
     this.name = name;

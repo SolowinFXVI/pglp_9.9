@@ -9,6 +9,13 @@ public class Triangle extends Shape {
   Coordinates second;
   Coordinates third;
 
+  /**
+   * A triangle is defined by 3 Coordinates.
+   * @param name .
+   * @param first .
+   * @param second .
+   * @param third .
+   */
   public Triangle(String name, Coordinates first, Coordinates second, Coordinates third) {
     super(name);
     this.first = first;
@@ -25,7 +32,8 @@ public class Triangle extends Shape {
 
   @Override
   public void display() {
-    System.out.println(this.name + this.first.getCoordinates() + this.second.getCoordinates() + this.third.getCoordinates());
+    System.out.println(this.name + this.first.getCoordinates() + this.second.getCoordinates()
+        + this.third.getCoordinates());
   }
 
   public Coordinates getFirst() {

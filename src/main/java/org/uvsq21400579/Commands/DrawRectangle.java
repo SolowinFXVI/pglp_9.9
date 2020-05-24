@@ -4,12 +4,19 @@ import org.uvsq21400579.Coordinates;
 import org.uvsq21400579.DrawingBoard;
 import org.uvsq21400579.Shapes.Rectangle;
 
-public class DrawRectangle extends DrawShape{
+public class DrawRectangle extends DrawShape {
 
   String name;
   Coordinates first;
   Coordinates second;
 
+  /**
+   * DrawRectangle Constructor.
+   * @param drawingBoard .
+   * @param name .
+   * @param first .
+   * @param second .
+   */
   public DrawRectangle(DrawingBoard drawingBoard, String name,
       Coordinates first, Coordinates second) {
     super(drawingBoard);

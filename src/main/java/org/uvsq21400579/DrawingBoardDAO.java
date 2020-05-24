@@ -21,82 +21,88 @@ public class DrawingBoardDAO extends DAO<DrawingBoard> {
   @Override
   public DrawingBoard create(DrawingBoard object) {
     String insertDrawingBoardString = "INSERT INTO DRAWINGBOARD(DRAWINGBOARDNAME) VALUES(?)";
-    String insertSquareDrawingMembersString = "INSERT INTO DRAWINGBOARDMEMBERS(DRAWINGBOARDMEMBERSNAME, SHAPE, SQUARESHAPENAME) VALUES(?, ?, ?)";
-    String insertCircleDrawingMembersString = "INSERT INTO DRAWINGBOARDMEMBERS(DRAWINGBOARDMEMBERSNAME, SHAPE, CIRCLESHAPENAME) VALUES(?, ?, ?)";
-    String insertTriangleDrawingMembersString = "INSERT INTO DRAWINGBOARDMEMBERS(DRAWINGBOARDMEMBERSNAME, SHAPE, TRIANGLESHAPENAME) VALUES(?, ?, ?)";
-    String insertRectangleDrawingMembersString = "INSERT INTO DRAWINGBOARDMEMBERS(DRAWINGBOARDMEMBERSNAME, SHAPE, RECTANGLESHAPENAME) VALUES(?, ?, ?)";
-    String insertBatchDrawingMembersString = "INSERT INTO DRAWINGBOARDMEMBERS(DRAWINGBOARDMEMBERSNAME, SHAPE, BATCHSHAPENAME) VALUES(?, ?, ?)";
+    String insertSquareDrawingMembersString = "INSERT INTO DRAWINGBOARDMEMBERS("
+        + "DRAWINGBOARDMEMBERSNAME, SHAPE, SQUARESHAPENAME) VALUES(?, ?, ?)";
+    String insertCircleDrawingMembersString = "INSERT INTO DRAWINGBOARDMEMBERS("
+        + "DRAWINGBOARDMEMBERSNAME, SHAPE, CIRCLESHAPENAME) VALUES(?, ?, ?)";
+    String insertTriangleDrawingMembersString = "INSERT INTO DRAWINGBOARDMEMBERS("
+        + "DRAWINGBOARDMEMBERSNAME, SHAPE, TRIANGLESHAPENAME) VALUES(?, ?, ?)";
+    String insertRectangleDrawingMembersString = "INSERT INTO DRAWINGBOARDMEMBERS("
+        + "DRAWINGBOARDMEMBERSNAME, SHAPE, RECTANGLESHAPENAME) VALUES(?, ?, ?)";
+    String insertBatchDrawingMembersString = "INSERT INTO DRAWINGBOARDMEMBERS("
+        + "DRAWINGBOARDMEMBERSNAME, SHAPE, BATCHSHAPENAME) VALUES(?, ?, ?)";
     this.connect();
-    try(
-        PreparedStatement insertDrawingBoard = connection.prepareStatement(insertDrawingBoardString);
-        PreparedStatement insertSquareDrawingMembers = connection.prepareStatement(insertSquareDrawingMembersString);
-        PreparedStatement insertCircleDrawingMembers = connection.prepareStatement(insertCircleDrawingMembersString);
-        PreparedStatement insertTriangleDrawingMembers = connection.prepareStatement(insertTriangleDrawingMembersString);
-        PreparedStatement insertRectangleDrawingMembers = connection.prepareStatement(insertRectangleDrawingMembersString);
-        PreparedStatement insertBatchDrawingMembers = connection.prepareStatement(insertBatchDrawingMembersString)
-        ) {
+    try (
+        PreparedStatement insertDrawingBoard =
+            connection.prepareStatement(insertDrawingBoardString);
+        PreparedStatement insertSquareDrawingMembers =
+            connection.prepareStatement(insertSquareDrawingMembersString);
+        PreparedStatement insertCircleDrawingMembers =
+            connection.prepareStatement(insertCircleDrawingMembersString);
+        PreparedStatement insertTriangleDrawingMembers =
+            connection.prepareStatement(insertTriangleDrawingMembersString);
+        PreparedStatement insertRectangleDrawingMembers =
+            connection.prepareStatement(insertRectangleDrawingMembersString);
+        PreparedStatement insertBatchDrawingMembers =
+            connection.prepareStatement(insertBatchDrawingMembersString)
+    ) {
       insertDrawingBoard.setString(1, object.name);
       insertDrawingBoard.executeUpdate();
       List<Shape> list = object.getShapeList();
       DAO dao;
-      for (Shape shapes : list){
-        if(shapes instanceof Square){
-            try {
-              dao = new SquareDAO();
-              dao.create( shapes);
-              insertSquareDrawingMembers.setString(1, object.name);
-              insertSquareDrawingMembers.setString(2, "SQUARE");
-              insertSquareDrawingMembers.setString(3, shapes.name);
-            }
-            catch (SQLIntegrityConstraintViolationException e){
-              System.out.println("Shape already saved ignoring");
-            }
+      for (Shape shapes : list) {
+        if (shapes instanceof Square) {
+          try {
+            dao = new SquareDAO();
+            dao.create(shapes);
+            insertSquareDrawingMembers.setString(1, object.name);
+            insertSquareDrawingMembers.setString(2, "SQUARE");
+            insertSquareDrawingMembers.setString(3, shapes.name);
+          } catch (SQLIntegrityConstraintViolationException e) {
+            System.out.println("Shape already saved ignoring");
+          }
         }
-        if(shapes instanceof Circle){
+        if (shapes instanceof Circle) {
           try {
             dao = new CircleDAO();
-            dao.create( shapes);
+            dao.create(shapes);
             insertCircleDrawingMembers.setString(1, object.name);
             insertCircleDrawingMembers.setString(2, "CIRCLE");
             insertCircleDrawingMembers.setString(3, shapes.name);
-          }
-          catch (SQLIntegrityConstraintViolationException e){
+          } catch (SQLIntegrityConstraintViolationException e) {
             System.out.println("Shape already saved ignoring");
           }
         }
-        if(shapes instanceof Triangle){
+        if (shapes instanceof Triangle) {
           try {
             dao = new TriangleDAO();
-            dao.create( shapes);
+            dao.create(shapes);
             insertTriangleDrawingMembers.setString(1, object.name);
             insertTriangleDrawingMembers.setString(2, "TRIANGLE");
             insertTriangleDrawingMembers.setString(3, shapes.name);
-          }
-          catch (SQLIntegrityConstraintViolationException e){
+          } catch (SQLIntegrityConstraintViolationException e) {
             System.out.println("Shape already saved ignoring");
           }
         }
-        if(shapes instanceof Rectangle){
+        if (shapes instanceof Rectangle) {
           try {
             dao = new RectangleDAO();
             dao.create(shapes);
             insertRectangleDrawingMembers.setString(1, object.name);
             insertRectangleDrawingMembers.setString(2, "RECTANGLE");
             insertRectangleDrawingMembers.setString(3, shapes.name);
-          }
-          catch (SQLIntegrityConstraintViolationException e){
+          } catch (SQLIntegrityConstraintViolationException e) {
             System.out.println("Shape already saved ignoring");
           }
         }
-        if(shapes instanceof Batch){
+        if (shapes instanceof Batch) {
           try {
             dao = new BatchDAO();
-            dao.create((Batch) shapes);
+            dao.create(shapes);
             insertBatchDrawingMembers.setString(1, object.name);
             insertBatchDrawingMembers.setString(2, "BATCH");
             insertBatchDrawingMembers.setString(3, shapes.name);
-          }
-          catch (SQLIntegrityConstraintViolationException e){
+          } catch (SQLIntegrityConstraintViolationException e) {
             System.out.println("Shape already saved ignoring");
           }
         }
@@ -112,40 +118,47 @@ public class DrawingBoardDAO extends DAO<DrawingBoard> {
   public DrawingBoard find(String key) {
     DrawingBoard drawingBoard = null;
     DAO dao;
-    String findDrawingBoardString = "SELECT * FROM DRAWINGBOARD DB WHERE DB.DRAWINGBOARDNAME = ?";
-    String findShapesString = "SELECT * FROM DRAWINGBOARDMEMBERS DBM WHERE DBM.DRAWINGBOARDMEMBERSNAME = ?";
+    String findDrawingBoardString = "SELECT * FROM DRAWINGBOARD DB"
+        + " WHERE DB.DRAWINGBOARDNAME = ?";
+    String findShapesString = "SELECT * FROM DRAWINGBOARDMEMBERS DBM"
+        + " WHERE DBM.DRAWINGBOARDMEMBERSNAME = ?";
     this.connect();
     try (
-        PreparedStatement findDrawingBoard = this.connection.prepareStatement(findDrawingBoardString);
+        PreparedStatement findDrawingBoard =
+            this.connection.prepareStatement(findDrawingBoardString);
         PreparedStatement findShapes = this.connection.prepareStatement(findShapesString)
-        ){
+    ) {
       findDrawingBoard.setString(1, key);
       findShapes.setString(1, key);
       ResultSet resultSet = findDrawingBoard.executeQuery();
       ResultSet resultSetShapes = findShapes.executeQuery();
-      if(resultSet.next()){
+      if (resultSet.next()) {
         drawingBoard = new DrawingBoard(resultSet.getString("DRAWINGBOARDNAME"));
       }
-      while (resultSetShapes.next()){
-        if(resultSetShapes.getString("SHAPE").equals("SQUARE")){
+      while (resultSetShapes.next()) {
+        if (resultSetShapes.getString("SHAPE").equals("SQUARE")) {
           dao = new SquareDAO();
           drawingBoard.addShape((Square) dao.find(resultSetShapes.getString("SQUARESHAPENAME")));
         }
-        if(resultSetShapes.getString("SHAPE").equals("CIRCLE")){
+        if (resultSetShapes.getString("SHAPE").equals("CIRCLE")) {
           dao = new CircleDAO();
-          drawingBoard.addShape((Circle) dao.find(resultSetShapes.getString("CIRCLESHAPENAME")));
+          drawingBoard.addShape((Circle) dao.find(
+              resultSetShapes.getString("CIRCLESHAPENAME")));
         }
-        if(resultSetShapes.getString("SHAPE").equals("TRIANGLE")){
+        if (resultSetShapes.getString("SHAPE").equals("TRIANGLE")) {
           dao = new TriangleDAO();
-          drawingBoard.addShape((Triangle) dao.find(resultSetShapes.getString("TRIANGLESHAPENAME")));
+          drawingBoard.addShape((Triangle) dao.find(
+              resultSetShapes.getString("TRIANGLESHAPENAME")));
         }
-        if(resultSetShapes.getString("SHAPE").equals("RECTANGLE")){
+        if (resultSetShapes.getString("SHAPE").equals("RECTANGLE")) {
           dao = new RectangleDAO();
-          drawingBoard.addShape((Rectangle) dao.find(resultSetShapes.getString("RECTANGLESHAPENAME")));
+          drawingBoard.addShape((Rectangle) dao.find(
+              resultSetShapes.getString("RECTANGLESHAPENAME")));
         }
-        if(resultSetShapes.getString("SHAPE").equals("BATCH")){
+        if (resultSetShapes.getString("SHAPE").equals("BATCH")) {
           dao = new BatchDAO();
-          drawingBoard.addShape((Batch) dao.find(resultSetShapes.getString("BATCHSHAPENAME")));
+          drawingBoard.addShape((Batch) dao.find(
+              resultSetShapes.getString("BATCHSHAPENAME")));
         }
       }
     } catch (SQLException throwables) {
@@ -157,13 +170,16 @@ public class DrawingBoardDAO extends DAO<DrawingBoard> {
 
   @Override
   public void delete(String key) {
-    String deleteDrawingBoardMembersString = "DELETE FROM DRAWINGBOARDMEMBERS DBM WHERE DBM.DRAWINGBOARDMEMBERSNAME = ?";
+    String deleteDrawingBoardMembersString = "DELETE FROM DRAWINGBOARDMEMBERS DBM"
+        + " WHERE DBM.DRAWINGBOARDMEMBERSNAME = ?";
     String deleteDrawingBoardString = "DELETE FROM DRAWINGBOARD DB WHERE DB.DRAWINGBOARDNAME = ? ";
     this.connect();
-    try(
-        PreparedStatement deleteDrawingBoardMembers = this.connection.prepareStatement(deleteDrawingBoardMembersString);
-        PreparedStatement deleteDrawingBoard = this.connection.prepareStatement(deleteDrawingBoardString)
-        ) {
+    try (
+        PreparedStatement deleteDrawingBoardMembers =
+            this.connection.prepareStatement(deleteDrawingBoardMembersString);
+        PreparedStatement deleteDrawingBoard =
+            this.connection.prepareStatement(deleteDrawingBoardString)
+    ) {
       deleteDrawingBoardMembers.setString(1,key);
       deleteDrawingBoardMembers.executeUpdate();
       deleteDrawingBoard.setString(1,key);

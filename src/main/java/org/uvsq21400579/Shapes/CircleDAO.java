@@ -11,17 +11,18 @@ public class CircleDAO extends DAO<Circle> {
 
   @Override
   public Circle create(Circle object) {
-    String insertCircleString = "INSERT INTO CIRCLE(NAME, FIRST_X, FIRST_Y, RADIUS) VALUES(?, ?, ?, ?)";
+    String insertCircleString = "INSERT INTO CIRCLE(NAME, FIRST_X, FIRST_Y, RADIUS) "
+        + "VALUES(?, ?, ?, ?)";
     this.connect();
     try (
         PreparedStatement insertCircle = this.connection.prepareStatement(insertCircleString)
-        ) {
+    ) {
       insertCircle.setString(1, object.name);
       insertCircle.setString(2, object.center.getX());
       insertCircle.setString(3, object.center.getY());
       insertCircle.setString(4, object.getRadius());
       insertCircle.executeUpdate();
-    } catch (SQLIntegrityConstraintViolationException e){
+    } catch (SQLIntegrityConstraintViolationException e) {
       System.out.println("Shape already exists ignoring");
     } catch (SQLException throwables) {
       throwables.printStackTrace();
@@ -37,11 +38,11 @@ public class CircleDAO extends DAO<Circle> {
     this.connect();
     try (
         PreparedStatement findCircle = this.connection.prepareStatement(findCircleString)
-        ) {
+    ) {
       findCircle.setString(1, key);
       ResultSet resultSet = findCircle.executeQuery();
-      if(resultSet.next()){
-        circle = new Circle( resultSet.getString("NAME"),
+      if (resultSet.next()) {
+        circle = new Circle(resultSet.getString("NAME"),
             new Coordinates(resultSet.getInt("FIRST_X"), resultSet.getInt("FIRST_Y")),
             resultSet.getInt("RADIUS"));
       }
@@ -58,9 +59,9 @@ public class CircleDAO extends DAO<Circle> {
     this.connect();
     try (
         PreparedStatement deleteCircle = this.connection.prepareStatement(deleteCircleString)
-        ) {
-        deleteCircle.setString(1, key);
-        deleteCircle.executeUpdate();
+    ) {
+      deleteCircle.setString(1, key);
+      deleteCircle.executeUpdate();
     } catch (SQLException throwables) {
       throwables.printStackTrace();
     }

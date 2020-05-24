@@ -18,8 +18,8 @@ public class Delete implements Command {
   @Override
   public void execute() { //TODO BROKEN
     List<Shape> shapeList = this.drawingBoard.getShapeList();
-    for(int i = 0; i < shapeList.size(); i++){
-      if(shapeList.get(i).getName().equals(name)){
+    for (int i = 0; i < shapeList.size(); i++) {
+      if (shapeList.get(i).getName().equals(name)) {
         shapeList.remove(i);
       }
     }

@@ -4,12 +4,12 @@ public class Coordinates {
   private int x;
   private int y;
 
-  public Coordinates(int x, int y){
+  public Coordinates(int x, int y) {
     this.x = x;
-    this.y =y;
+    this.y = y;
   }
 
-  public void moveBy(int x, int y){
+  public void moveBy(int x, int y) {
     this.x = this.x + x;
     this.y = this.y + y;
   }
@@ -22,7 +22,7 @@ public class Coordinates {
     return String.valueOf(y);
   }
 
-  public String getCoordinates(){
-    return ("("+ this.x +"," + this.y +")");
+  public String getCoordinates() {
+    return ("(" + this.x + "," + this.y + ")");
   }
 }

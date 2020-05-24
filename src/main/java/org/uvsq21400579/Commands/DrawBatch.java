@@ -5,11 +5,17 @@ import org.uvsq21400579.DrawingBoard;
 import org.uvsq21400579.Shape;
 import org.uvsq21400579.Shapes.Batch;
 
-public class DrawBatch extends DrawShape{
+public class DrawBatch extends DrawShape {
 
   String name;
   String[] batchList;
 
+  /**
+   * drawBatch (group of shapes) Constructor.
+   * @param drawingBoard current drawinBoard.
+   * @param name name of the batch.
+   * @param batchList .
+   */
   public DrawBatch(DrawingBoard drawingBoard, String name,
       String[] batchList) {
     super(drawingBoard);

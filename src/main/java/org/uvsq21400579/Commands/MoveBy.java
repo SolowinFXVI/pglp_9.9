@@ -11,6 +11,12 @@ public class MoveBy implements Command {
   int x;
   int y;
 
+  /**
+   * Moves a shape by the specified amount x and y.
+   * @param shape .
+   * @param x Horizontal.
+   * @param y Vertical.
+   */
   public MoveBy(Shape shape, int x, int y) {
     this.shape = shape;
     this.x = x;
@@ -19,10 +25,9 @@ public class MoveBy implements Command {
 
   @Override
   public void execute() {
-    if(this.shape != null) {
+    if (this.shape != null) {
       this.shape.moveBy(this.x, this.y);
-    }
-    else {
+    } else {
       this.batch.moveBy(this.x, this.y);
     }
   }
