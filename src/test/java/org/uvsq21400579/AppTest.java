@@ -1,17 +1,18 @@
 package org.uvsq21400579;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.uvsq21400579.Commands.Delete;
 import org.uvsq21400579.Commands.DrawCircle;
 import org.uvsq21400579.Commands.DrawRectangle;
 import org.uvsq21400579.Commands.DrawSquare;
 import org.uvsq21400579.Commands.DrawTriangle;
-import org.uvsq21400579.Commands.Quit;
 import org.uvsq21400579.Shapes.Batch;
 import org.uvsq21400579.Shapes.BatchDAO;
 import org.uvsq21400579.Shapes.Circle;
@@ -28,12 +29,51 @@ public class AppTest
 {
     @BeforeClass
     public static void initializeDB(){
-
+        String createTableSquareString = "CREATE TABLE SQUARE(NAME VARCHAR(128) PRIMARY KEY NOT NULL, FIRST_X INT, FIRST_Y INT, SIDE INT)";
+        String createTableCircleString = "CREATE TABLE CIRCLE(NAME VARCHAR(128) PRIMARY KEY NOT NULL, FIRST_X INT, FIRST_Y INT, RADIUS INT)";
+        String createTableTriangleString = "CREATE TABLE TRIANGLE(NAME VARCHAR(128) PRIMARY KEY NOT NULL, FIRST_X INT, FIRST_Y INT, SECOND_X INT, SECOND_Y INT, THIRD_X INT, THIRD_Y INT)";
+        String createTableRectangleString = "CREATE TABLE RECTANGLE(NAME VARCHAR(128) PRIMARY KEY NOT NULL, FIRST_X INT, FIRST_Y INT, SECOND_X INT, SECOND_Y INT)";
+        String createTableBatch = "CREATE TABLE BATCH(BATCHNAME VARCHAR(128) PRIMARY KEY NOT NULL)";
+        String createTableBatchMembers = "CREATE TABLE BATCHMEMBERS(BATCHNAME VARCHAR(128), NAME VARCHAR(128),"
+            + " SHAPE VARCHAR (128), PRIMARY KEY (BATCHNAME, NAME, SHAPE)"
+            + ", FIRST_X INT, FIRST_Y INT, SECOND_X INT, SECOND_Y INT,"
+            + " THIRD_X INT, THIRD_Y INT, SIDE INT, RADIUS INT, FOREIGN KEY (BATCHNAME) REFERENCES BATCH(BATCHNAME))";
+        String driver = "org.apache.derby.jdbc.EmbeddedDriver";
+        String protocol = "jdbc:derby:";
+        try{
+            Class.forName(driver).newInstance();
+            Connection connection = DriverManager.getConnection(protocol + "drawingAppDB;create=true");
+            Statement statement = connection.createStatement();
+            statement.execute(createTableSquareString);
+            statement.execute(createTableCircleString);
+            statement.execute(createTableTriangleString);
+            statement.execute(createTableRectangleString);
+            statement.execute(createTableBatch);
+            statement.execute(createTableBatchMembers);
+            connection.close();
+        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @AfterClass
-    public static void cleanupDB(){
+    public static void cleanupDB() throws SQLException {
+        String cleanupTableSquareString = "DROP TABLE SQUARE";
+        String cleanupTableCircleString = "DROP TABLE CIRCLE";
+        String cleanupTableTriangleString = "DROP TABLE TRIANGLE";
+        String cleanupTableRectangleString = "DROP TABLE RECTANGLE";
+        String cleanupTableBatchMembers = "DROP TABLE BATCHMEMBERS";
+        String cleanupTableBatch = "DROP TABLE BATCH";
 
+        Connection connection = DriverManager.getConnection("jdbc:derby:drawingAppDB");
+        Statement statement = connection.createStatement();
+        statement.execute(cleanupTableSquareString);
+        statement.execute(cleanupTableCircleString);
+        statement.execute(cleanupTableTriangleString);
+        statement.execute(cleanupTableRectangleString);
+        statement.execute(cleanupTableBatchMembers);
+        statement.execute(cleanupTableBatch);
+        connection.close();
     }
 
     @Test
@@ -57,37 +97,41 @@ public class AppTest
     @Test
     public void testCircleDAO(){
         CircleDAO dao = new CircleDAO();
-        Circle shape = new Circle("cercle1", new Coordinates(1,1), 3);
+        Circle shape = new Circle("cercle_test_1", new Coordinates(1,1), 3);
         dao.create(shape);
-        Circle result = dao.find("cercle1");
-        dao.delete("cercle1");
+        Circle result = dao.find("cercle_test_1");
+        dao.delete("cercle_test_1");
         assertEquals(result.name, shape.name);
-        assertEquals(result.getCenter(), shape.getCenter());
+        assertEquals(result.getCenter().getX(), shape.getCenter().getX());
+        assertEquals(result.getCenter().getY(), shape.getCenter().getY());
         assertEquals(result.getRadius(), shape.getRadius());
     }
 
     @Test
     public void testSquareDAO(){
         SquareDAO dao = new SquareDAO();
-        Square square = new Square("square1", new Coordinates(2,2), 3);
+        Square square = new Square("square_test_1", new Coordinates(2,2), 3);
         dao.create(square);
-        Square result = dao.find("square1");
-        dao.delete("square1");
+        Square result = dao.find("square_test_1");
+        dao.delete("square_test_1");
         assertEquals(result.name, square.name);
-        assertEquals(result.getTopLeft(), square.getTopLeft());
+        assertEquals(result.getTopLeft().getX(), square.getTopLeft().getX());
+        assertEquals(result.getTopLeft().getY(), square.getTopLeft().getY());
         assertEquals(result.getSide(), square.getSide());
     }
 
     @Test
     public void testRectangleDAO(){
         RectangleDAO dao = new RectangleDAO();
-        Rectangle rectangle = new Rectangle("rectangle1", new Coordinates(1, 2), new Coordinates(3, 4));
+        Rectangle rectangle = new Rectangle("rectangle_test_1", new Coordinates(1, 2), new Coordinates(3, 4));
         dao.create(rectangle);
-        Rectangle result = dao.find("rectangle1");
-        dao.delete("rectangle1");
+        Rectangle result = dao.find("rectangle_test_1");
+        dao.delete("rectangle_test_1");
         assertEquals(result.name, rectangle.name);
-        assertEquals(result.getFirst(), rectangle.getFirst());
-        assertEquals(result.getSecond(), rectangle.getSecond());
+        assertEquals(result.getFirst().getX(), rectangle.getFirst().getX());
+        assertEquals(result.getFirst().getY(), rectangle.getFirst().getY());
+        assertEquals(result.getSecond().getX(), rectangle.getSecond().getX());
+        assertEquals(result.getSecond().getY(), rectangle.getSecond().getY());
     }
 
     @Test
@@ -98,9 +142,12 @@ public class AppTest
         Triangle result = dao.find("triangle1");
         dao.delete("triangle1");
         assertEquals(result.name, triangle.name);
-        assertEquals(result.getFirst(), triangle.getFirst());
-        assertEquals(result.getSecond(), triangle.getSecond());
-        assertEquals(result.getThird(), triangle.getThird());
+        assertEquals(result.getFirst().getX(), triangle.getFirst().getX());
+        assertEquals(result.getFirst().getY(), triangle.getFirst().getY());
+        assertEquals(result.getSecond().getX(), triangle.getSecond().getX());
+        assertEquals(result.getSecond().getY(), triangle.getSecond().getY());
+        assertEquals(result.getThird().getX(), triangle.getThird().getX());
+        assertEquals(result.getThird().getY(), triangle.getThird().getY());
     }
 
     @Test
@@ -119,7 +166,56 @@ public class AppTest
         Batch result = dao.find("test");
         dao.delete("test");
         assertEquals(result.name, batch.name);
-        assertEquals(result.getShapesList(), batch.getShapesList());
+        result.display();
+        batch.display();
+        //TODO MORE THAN VISUAL PROOF
+    }
+
+    @Test
+    public void testBatchMove(){
+        BatchDAO dao = new BatchDAO();
+        Batch batch = new Batch("test2");
+        Circle shape = new Circle("cercle2", new Coordinates(1,1), 3);
+        Square square = new Square("square2", new Coordinates(2,2), 3);
+        Rectangle rectangle = new Rectangle("rectangle2", new Coordinates(1, 2), new Coordinates(3, 4));
+        Triangle triangle = new Triangle("triangle2", new Coordinates(1, 2), new Coordinates(3, 4), new Coordinates(5, 6));
+        batch.addShape(shape);
+        batch.addShape(square);
+        batch.addShape(rectangle);
+        batch.addShape(triangle);
+        dao.create(batch);
+        Batch result = dao.find("test2");
+        dao.delete("test2");
+        assertEquals(result.name, batch.name);
+        batch.moveBy(1,1);
+        result.display();
+        batch.display();
+        //TODO MORE THAN VISUAL PROOF
+    }
+
+    @Test
+    public void testBatchInBatch(){
+        BatchDAO dao = new BatchDAO();
+        Batch batch = new Batch("test2");
+        Circle shape = new Circle("cercle2", new Coordinates(1,1), 3);
+        Square square = new Square("square2", new Coordinates(2,2), 3);
+        Rectangle rectangle = new Rectangle("rectangle2", new Coordinates(1, 2), new Coordinates(3, 4));
+        Triangle triangle = new Triangle("triangle2", new Coordinates(1, 2), new Coordinates(3, 4), new Coordinates(5, 6));
+        batch.addShape(shape);
+        batch.addShape(square);
+        batch.addShape(rectangle);
+        batch.addShape(triangle);
+        Batch batch2 = new Batch("test3");
+        Square square2 = new Square("squareInBatch2", new Coordinates(3,3),3);
+        batch2.addShape(square2);
+        batch.addShape(batch2);
+        dao.create(batch);
+        Batch result = dao.find("test2");
+        dao.delete("test2");
+        assertEquals(result.name, batch.name);
+        result.display();
+        batch.display();
+        //TODO MORE THAN VISUAL PROOF
     }
 
     @Test

@@ -10,7 +10,7 @@ public class CircleDAO extends DAO<Circle> {
 
   @Override
   public Circle create(Circle object) {
-    String insertCircleString = "INSERT INTO CIRCLE(NAME, X, Y, RADIUS) VALUES(?, ?, ?, ?)";
+    String insertCircleString = "INSERT INTO CIRCLE(NAME, FIRST_X, FIRST_Y, RADIUS) VALUES(?, ?, ?, ?)";
     this.connect();
     try (
         PreparedStatement insertCircle = this.connection.prepareStatement(insertCircleString)
@@ -39,7 +39,7 @@ public class CircleDAO extends DAO<Circle> {
       ResultSet resultSet = findCircle.executeQuery();
       if(resultSet.next()){
         circle = new Circle( resultSet.getString("NAME"),
-            new Coordinates(resultSet.getInt("X"), resultSet.getInt("Y")),
+            new Coordinates(resultSet.getInt("FIRST_X"), resultSet.getInt("FIRST_Y")),
             resultSet.getInt("RADIUS"));
       }
     } catch (SQLException throwables) {

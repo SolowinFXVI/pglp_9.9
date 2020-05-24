@@ -12,11 +12,11 @@ public class BatchDAO extends DAO<Batch> {
   @Override
   public Batch create(Batch object) {
     String insertBatchString = "INSERT INTO BATCH(BATCHNAME) VALUES (?)";
-    String insertCircleString = "INSERT INTO BATCHCIRCLE(BATCHNAME, NAME) VALUES (?, ?)";
-    String insertSquareString = "INSERT INTO BATCHSQUARE(BATCHNAME, NAME) VALUES (?, ?)";
-    String insertTriangleString = "INSERT INTO BATCHTRIANGLE(BATCHNAME, NAME) VALUES (?, ?)";
-    String insertRectangleString = "INSERT INTO BATCHRECTANGLE(BATCHNAME, NAME) VALUES (?, ?)";
-    String insertBatchceptionString = "INSERT INTO BATCHCEPTION(BATCHNAME, NAME) VALUES (?, ?)";
+    String insertCircleString = "INSERT INTO BATCHMEMBERS(BATCHNAME, NAME, SHAPE, FIRST_X, FIRST_Y, RADIUS) VALUES (?, ?, ?, ?, ?, ?)";
+    String insertSquareString = "INSERT INTO BATCHMEMBERS(BATCHNAME, NAME, SHAPE, FIRST_X, FIRST_Y, SIDE) VALUES (?, ?, ?, ?, ?, ?)";
+    String insertTriangleString = "INSERT INTO BATCHMEMBERS(BATCHNAME, NAME, SHAPE, FIRST_X, FIRST_Y, SECOND_X, SECOND_Y, THIRD_X, THIRD_Y) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    String insertRectangleString = "INSERT INTO BATCHMEMBERS(BATCHNAME, NAME, SHAPE, FIRST_X, FIRST_Y, SECOND_X, SECOND_Y) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    String insertBatchceptionString = "INSERT INTO BATCHMEMBERS(BATCHNAME, NAME, SHAPE) VALUES (?, ?, ?)";
     this.connect();
     try(
         PreparedStatement insertBatch = this.connection.prepareStatement(insertBatchString);
@@ -36,6 +36,10 @@ public class BatchDAO extends DAO<Batch> {
           dao.create((Square) shapes);
           insertSquare.setString(1, object.name);
           insertSquare.setString(2, shapes.name);
+          insertSquare.setString(3, "SQUARE");
+          insertSquare.setString(4, ((Square) shapes).topLeft.getX());
+          insertSquare.setString(5,((Square) shapes).topLeft.getY());
+          insertSquare.setString(6, String.valueOf(((Square) shapes).side));
           insertSquare.executeUpdate();
         }
         else if(shapes instanceof Circle){
@@ -43,6 +47,10 @@ public class BatchDAO extends DAO<Batch> {
           dao.create((Circle) shapes);
           insertCircle.setString(1, object.name);
           insertCircle.setString(2, shapes.name);
+          insertCircle.setString(3, "CIRCLE");
+          insertCircle.setString(4, ((Circle) shapes).getCenter().getX());
+          insertCircle.setString(5, ((Circle) shapes).getCenter().getY());
+          insertCircle.setString(6, ((Circle) shapes).getRadius());
           insertCircle.executeUpdate();
         }
         else if(shapes instanceof Triangle){
@@ -50,6 +58,13 @@ public class BatchDAO extends DAO<Batch> {
           dao.create((Triangle) shapes);
           insertTriangle.setString(1, object.name);
           insertTriangle.setString(2, shapes.name);
+          insertTriangle.setString(3, "TRIANGLE");
+          insertTriangle.setString(4, ((Triangle) shapes).first.getX());
+          insertTriangle.setString(5, ((Triangle) shapes).first.getY());
+          insertTriangle.setString(6, ((Triangle) shapes).second.getX());
+          insertTriangle.setString(7, ((Triangle) shapes).second.getY());
+          insertTriangle.setString(8, ((Triangle) shapes).third.getX());
+          insertTriangle.setString(9, ((Triangle) shapes).third.getY());
           insertTriangle.executeUpdate();
         }
         else if(shapes instanceof  Rectangle){
@@ -57,6 +72,11 @@ public class BatchDAO extends DAO<Batch> {
           dao.create((Rectangle) shapes);
           insertRectangle.setString(1, object.name);
           insertRectangle.setString(2, shapes.name);
+          insertRectangle.setString(3, "RECTANGLE");
+          insertRectangle.setString(4, ((Rectangle) shapes).first.getX());
+          insertRectangle.setString(5, ((Rectangle) shapes).first.getY());
+          insertRectangle.setString(6, ((Rectangle) shapes).second.getX());
+          insertRectangle.setString(7, ((Rectangle) shapes).second.getY());
           insertRectangle.executeUpdate();
         }
         else if(shapes instanceof Batch){
@@ -64,6 +84,7 @@ public class BatchDAO extends DAO<Batch> {
           dao.create((Batch) shapes);
           insertBatchception.setString(1, object.name);
           insertBatchception.setString(2, shapes.name);
+          insertBatchception.setString(3,"BATCH");
           insertBatchception.executeUpdate();
         }
       }
@@ -80,57 +101,55 @@ public class BatchDAO extends DAO<Batch> {
   public Batch find(String key) {
     Batch batch = null;
     DAO dao;
-    String findBatchString = "SELECT * FROM BATCH WHERE BATCH.NAME = ?";
-    String findSquareString = "SELECT * FORM BATCHSQUARE WHERE BATCHSQUARE.NAME = ?";
-    String findCircleString = "SELECT * FORM BATCHCIRCLE WHERE BATCHCIRCLE.NAME = ?";
-    String findTriangleString = "SELECT * FORM BATCHTRIANGLE WHERE BATCHTRIANGLE.NAME = ?";
-    String findRectangleString = "SELECT * FORM BATCHRECTANGLE WHERE BATCHRECTANGLE.NAME = ?";
-    String findBatchceptionString = "SELECT * FORM BATCHCEPTION WHERE BATCHCEPTION.NAME = ?";
+    String findBatchString = "SELECT * FROM BATCH WHERE BATCH.BATCHNAME = ?";
+    String findShapesString = "SELECT * FROM BATCHMEMBERS WHERE BATCHMEMBERS.BATCHNAME = ?";
+    String findSquareString = "SELECT * FROM SQUARE WHERE SQUARE.NAME = ?";
+    String findCircleString = "SELECT * FROM CIRCLE WHERE CIRCLE.NAME = ?";
+    String findTriangleString = "SELECT * FROM TRIANGLE WHERE TRIANGLE.NAME = ?";
+    String findRectangleString = "SELECT * FROM RECTANGLE WHERE RECTANGLE.NAME = ?";
     this.connect();
     try(
         PreparedStatement findBatch = this.connection.prepareStatement(findBatchString);
-        PreparedStatement findSquare = this.connection.prepareStatement(findSquareString);
+        PreparedStatement findShapes = this.connection.prepareStatement(findShapesString);
+        /*PreparedStatement findSquare = this.connection.prepareStatement(findSquareString);
         PreparedStatement findCircle = this.connection.prepareStatement(findCircleString);
         PreparedStatement findTriangle = this.connection.prepareStatement(findTriangleString);
-        PreparedStatement findRectangle = this.connection.prepareStatement(findRectangleString);
-        PreparedStatement findBatchception = this.connection.prepareStatement(findBatchceptionString);
+        PreparedStatement findRectangle = this.connection.prepareStatement(findRectangleString)*/
         ) {
       findBatch.setString(1, key);
-      findSquare.setString(1,key);
-      findCircle.setString(1,key);
-      findTriangle.setString(1,key);
-      findRectangle.setString(1,key);
-      findBatchception.setString(1,key);
+      findShapes.setString(1,key);
       ResultSet resultSet = findBatch.executeQuery();
-      ResultSet resultSetSquare = findSquare.executeQuery();
-      ResultSet resultSetCircle = findCircle.executeQuery();
-      ResultSet resultSetTriangle = findTriangle.executeQuery();
-      ResultSet resultSetRectangle = findRectangle.executeQuery();
-      ResultSet resultSetBatchception = findBatchception.executeQuery();
+      ResultSet resultSetShapes = findShapes.executeQuery();
       if(resultSet.next()){
         batch = new Batch(resultSet.getString("BATCHNAME"));
       }
-      while (resultSetSquare.next()){
-        dao = new SquareDAO();
-        batch.addShape((Square) dao.find(resultSetSquare.getString("NAME")));
-      }
-      while (resultSetCircle.next()){
-        dao = new CircleDAO();
-        batch.addShape((Circle) dao.find(resultSetCircle.getString("NAME")));
-      }
-      while (resultSetTriangle.next()){
-        dao = new TriangleDAO();
-        batch.addShape((Triangle) dao.find(resultSetTriangle.getString("NAME")));
-      }
-      while (resultSetRectangle.next()){
-        dao = new RectangleDAO();
-        batch.addShape((Rectangle) dao.find(resultSetRectangle.getString("NAME")));
-      }
-      while (resultSetBatchception.next()){
-        dao = new BatchDAO();
-        batch.addShape((Batch) dao.find(resultSetBatchception.getString("NAME")));
-      }
+      while (resultSetShapes.next()){
+        if(resultSetShapes.getString("SHAPE").equals("SQUARE")){
+          /*findSquare.setString(1, resultSetShapes.getString("NAME"));
+          ResultSet resultFindSquare = findSquare.executeQuery();
+          if(resultFindSquare.next()){*/
+            dao = new SquareDAO();
+            batch.addShape((Square) dao.find(resultSetShapes.getString("NAME")));
+          //}
+        }
+        if(resultSetShapes.getString("SHAPE").equals("CIRCLE")){
+          dao = new CircleDAO();
+          batch.addShape((Circle) dao.find(resultSetShapes.getString("NAME")));
+        }
+        if(resultSetShapes.getString("SHAPE").equals("TRIANGLE")){
+          dao = new TriangleDAO();
+          batch.addShape((Triangle) dao.find(resultSetShapes.getString("NAME")));
+        }
+        if(resultSetShapes.getString("SHAPE").equals("RECTANGLE")){
+          dao = new RectangleDAO();
+          batch.addShape((Rectangle) dao.find(resultSetShapes.getString("NAME")));
+        }
+        if(resultSetShapes.getString("SHAPE").equals("BATCH")){
+          dao = new BatchDAO();
+          batch.addShape((Batch) dao.find(resultSetShapes.getString("NAME")));
+        }
 
+      }
     } catch (SQLException throwables) {
       throwables.printStackTrace();
     }
@@ -140,11 +159,15 @@ public class BatchDAO extends DAO<Batch> {
 
   @Override
   public void delete(String key) {
+      String deleteBatchMemberString = "DELETE FROM BATCHMEMBERS WHERE BATCHMEMBERS.BATCHNAME = ?";
       String deleteString = "DELETE FROM BATCH WHERE BATCH.BATCHNAME = ?";
       this.connect();
       try(
+          PreparedStatement deleteMembers = this.connection.prepareStatement(deleteBatchMemberString);
           PreparedStatement delete = this.connection.prepareStatement(deleteString);
           ) {
+        deleteMembers.setString(1,key);
+        deleteMembers.executeUpdate();
         delete.setString(1, key);
         delete.executeUpdate();
       } catch (SQLException throwables) {

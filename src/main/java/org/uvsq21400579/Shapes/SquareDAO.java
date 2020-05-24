@@ -10,7 +10,7 @@ public class SquareDAO extends DAO<Square> {
 
   @Override
   public Square create(Square object) {
-    String insertSquareString = "INSERT INTO SQUARE(NAME, X, Y, SIDE) VALUES(?, ?, ?, ?)";
+    String insertSquareString = "INSERT INTO SQUARE(NAME, FIRST_X, FIRST_Y, SIDE) VALUES(?, ?, ?, ?)";
     this.connect();
     try (
         PreparedStatement insertSquare = this.connection.prepareStatement(insertSquareString)
@@ -39,7 +39,7 @@ public class SquareDAO extends DAO<Square> {
       ResultSet resultSet = findSquare.executeQuery();
       if (resultSet.next()) {
         square = new Square(resultSet.getString("NAME"), new Coordinates(
-            resultSet.getInt("X"),resultSet.getInt("Y")),
+            resultSet.getInt("FIRST_X"),resultSet.getInt("FIRST_Y")),
             resultSet.getInt("SIDE"));
       }
     } catch (SQLException throwables) {
