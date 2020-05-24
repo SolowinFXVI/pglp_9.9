@@ -1,6 +1,7 @@
 package org.uvsq21400579.Commands;
 
 import com.sun.xml.internal.fastinfoset.util.StringArray;
+import java.util.ArrayList;
 import java.util.List;
 import org.uvsq21400579.DrawingBoard;
 import org.uvsq21400579.Shape;
@@ -20,16 +21,16 @@ public class DrawBatch extends DrawShape{
 
   @Override
   public void execute() {
-    List<Shape> list = this.drawingBoard.getShapeList();
+    List<Shape> shapeList = this.drawingBoard.getShapeList();
     Batch batch = new Batch(this.name);
-    for (int i = 0; i < list.size(); i++) {
-      for (int j = 0; j < batchList.length ; j++) {
-        if (list.get(i).getName().equals(batchList[j])) {
-          batch.addShape(list.get(i));
-          list.remove(i);
+    for (int i = 0; i < shapeList.size(); i++) {
+      for (String s : batchList) {
+        if (shapeList.get(i).getName().equals(s)) {
+          batch.addShape(shapeList.get(i));
+          shapeList.remove(i);
         }
       }
     }
-    list.add(batch);
+    shapeList.add(batch);
   }
 }

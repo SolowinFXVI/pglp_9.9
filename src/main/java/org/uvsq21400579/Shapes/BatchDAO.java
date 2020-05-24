@@ -88,8 +88,6 @@ public class BatchDAO extends DAO<Batch> {
           insertBatchception.executeUpdate();
         }
       }
-
-
     } catch (SQLException throwables) {
       throwables.printStackTrace();
     }

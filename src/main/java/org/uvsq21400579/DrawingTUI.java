@@ -23,28 +23,33 @@ public class DrawingTUI {
   }
 
   public Command nextCommand(){
-    String input;
+    String input = null;
     Command command = null;
-    input = this.scanner.nextLine();
-    input = input.replaceAll("\\s+", "");
-    String commandString = input.substring(0, input.indexOf("("));
+    String commandString = null;
+    try {
+      input = this.scanner.nextLine();
+      input = input.replaceAll("\\s+", "");
+      commandString = input.substring(0, input.indexOf("("));}
+    catch (Exception e){
+      System.out.println("Illegal argument");
+    }
     try{
-      if(commandString.matches("move")){
+      if(commandString.matches("move") || commandString.matches("Move")){
         command = moveByCommand(input);
       }
-      else if(commandString.matches("drawBatch")){
+      else if(commandString.matches("drawBatch") || commandString.matches("Batch") || commandString.matches("group") || commandString.matches("Group")){
         command = drawBatch(input);
       }
-      else if(commandString.matches("delete")){
+      else if(commandString.matches("delete") || commandString.matches("Delete")){
         command = delete(input);
       }
-      else if(commandString.matches("save")){
+      else if(commandString.matches("save") || commandString.matches("Save")){
         command = saveCommand(input);
       }
-      else if(commandString.matches("load")){
+      else if(commandString.matches("load") || commandString.matches("Load")){
         command = load(input);
       }
-      else if(commandString.matches("quit")){
+      else if(commandString.matches("quit")|| commandString.matches("Quit")){
         command = quit();
       }
       else if(input.contains("=")){
@@ -127,16 +132,16 @@ public class DrawingTUI {
     String[] params = input.split("=");
     String shapeName = input.substring(0, input.indexOf("="));
     String shapeType = params[1].substring(0, params[1].indexOf("("));
-    if(shapeType.matches("Circle")){
+    if(shapeType.matches("Circle") || shapeType.matches("circle")){
       command = drawCircle(input, shapeName);
     }
-    else if(shapeType.matches("Square")){
+    else if(shapeType.matches("Square") || shapeType.matches("square")){
       command = drawSquare(input, shapeName);
     }
-    else if(shapeType.matches("Rectangle")){
+    else if(shapeType.matches("Rectangle") || shapeType.matches("rectangle")){
       command = drawRectangle(input, shapeName);
     }
-    else if(shapeName.matches("Triangle")){
+    else if(shapeName.matches("Triangle") || shapeType.matches("triangle")){
       command = drawTriangle(input, shapeName);
     }
     return command;

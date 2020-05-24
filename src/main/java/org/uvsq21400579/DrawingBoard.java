@@ -14,8 +14,12 @@ public class DrawingBoard {
     this.shapeList = new ArrayList<>();
   }
 
-  public List<Shape> getShapeList(){
+  public List<Shape> getShapeListUnmodifiable(){
     return Collections.unmodifiableList(shapeList);
+  }
+
+  public List<Shape> getShapeList(){
+    return this.shapeList;
   }
 
   public void setShapeList(List<Shape> shapeList) {
