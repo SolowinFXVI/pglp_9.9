@@ -29,14 +29,6 @@ public class AppTest
 {
   @BeforeClass
   public static void initializeDB(){
-    String cleanupTableDrawingMembersString = "DROP TABLE DRAWINGBOARDMEMBERS";
-    String cleanupTableDrawingString = "DROP TABLE DRAWINGBOARD";
-    String cleanupTableSquareString = "DROP TABLE SQUARE";
-    String cleanupTableCircleString = "DROP TABLE CIRCLE";
-    String cleanupTableTriangleString = "DROP TABLE TRIANGLE";
-    String cleanupTableRectangleString = "DROP TABLE RECTANGLE";
-    String cleanupTableBatchMembers = "DROP TABLE BATCHMEMBERS";
-    String cleanupTableBatch = "DROP TABLE BATCH";
     String createTableSquareString = "CREATE TABLE SQUARE(NAME VARCHAR(128) PRIMARY KEY NOT NULL, FIRST_X INT, FIRST_Y INT, SIDE INT)";
     String createTableCircleString = "CREATE TABLE CIRCLE(NAME VARCHAR(128) PRIMARY KEY NOT NULL, FIRST_X INT, FIRST_Y INT, RADIUS INT)";
     String createTableTriangleString = "CREATE TABLE TRIANGLE(NAME VARCHAR(128) PRIMARY KEY NOT NULL, FIRST_X INT, FIRST_Y INT, SECOND_X INT, SECOND_Y INT, THIRD_X INT, THIRD_Y INT)";
@@ -62,16 +54,6 @@ public class AppTest
       Connection connection = DriverManager
           .getConnection(protocol + "drawingAppDB;create=true");
       Statement statement = connection.createStatement();
-
-//            statement.execute(cleanupTableDrawingMembersString);
-//            statement.execute(cleanupTableDrawingString);
-//            statement.execute(cleanupTableSquareString);
-//            statement.execute(cleanupTableCircleString);
-//            statement.execute(cleanupTableTriangleString);
-//            statement.execute(cleanupTableRectangleString);
-//            statement.execute(cleanupTableBatchMembers);
-//            statement.execute(cleanupTableBatch);
-
       statement.execute(createTableSquareString);
       statement.execute(createTableCircleString);
       statement.execute(createTableTriangleString);
