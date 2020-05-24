@@ -29,35 +29,68 @@ public class AppTest
 {
     @BeforeClass
     public static void initializeDB(){
+        String cleanupTableDrawingMembersString = "DROP TABLE DRAWINGBOARDMEMBERS";
+        String cleanupTableDrawingString = "DROP TABLE DRAWINGBOARD";
+        String cleanupTableSquareString = "DROP TABLE SQUARE";
+        String cleanupTableCircleString = "DROP TABLE CIRCLE";
+        String cleanupTableTriangleString = "DROP TABLE TRIANGLE";
+        String cleanupTableRectangleString = "DROP TABLE RECTANGLE";
+        String cleanupTableBatchMembers = "DROP TABLE BATCHMEMBERS";
+        String cleanupTableBatch = "DROP TABLE BATCH";
         String createTableSquareString = "CREATE TABLE SQUARE(NAME VARCHAR(128) PRIMARY KEY NOT NULL, FIRST_X INT, FIRST_Y INT, SIDE INT)";
         String createTableCircleString = "CREATE TABLE CIRCLE(NAME VARCHAR(128) PRIMARY KEY NOT NULL, FIRST_X INT, FIRST_Y INT, RADIUS INT)";
         String createTableTriangleString = "CREATE TABLE TRIANGLE(NAME VARCHAR(128) PRIMARY KEY NOT NULL, FIRST_X INT, FIRST_Y INT, SECOND_X INT, SECOND_Y INT, THIRD_X INT, THIRD_Y INT)";
         String createTableRectangleString = "CREATE TABLE RECTANGLE(NAME VARCHAR(128) PRIMARY KEY NOT NULL, FIRST_X INT, FIRST_Y INT, SECOND_X INT, SECOND_Y INT)";
-        String createTableBatch = "CREATE TABLE BATCH(BATCHNAME VARCHAR(128) PRIMARY KEY NOT NULL)";
-        String createTableBatchMembers = "CREATE TABLE BATCHMEMBERS(BATCHNAME VARCHAR(128), NAME VARCHAR(128),"
+        String createTableBatchString = "CREATE TABLE BATCH(BATCHNAME VARCHAR(128) PRIMARY KEY NOT NULL)";
+        String createTableBatchMembersString = "CREATE TABLE BATCHMEMBERS(BATCHNAME VARCHAR(128), NAME VARCHAR(128),"
             + " SHAPE VARCHAR (128), PRIMARY KEY (BATCHNAME, NAME, SHAPE)"
             + ", FIRST_X INT, FIRST_Y INT, SECOND_X INT, SECOND_Y INT,"
             + " THIRD_X INT, THIRD_Y INT, SIDE INT, RADIUS INT, FOREIGN KEY (BATCHNAME) REFERENCES BATCH(BATCHNAME))";
+        String createTableDrawing = "CREATE TABLE DRAWINGBOARD(DRAWINGBOARDNAME VARCHAR (128) PRIMARY KEY)";
+        String createTableDrawingMembers = "CREATE TABLE DRAWINGBOARDMEMBERS(DRAWINGBOARDMEMBERSNAME VARCHAR(128), FOREIGN KEY (DRAWINGBOARDMEMBERSNAME) REFERENCES DRAWINGBOARD(DRAWINGBOARDNAME),"
+            + " SHAPE VARCHAR(128), SQUARESHAPENAME VARCHAR(128), FOREIGN KEY (SQUARESHAPENAME) REFERENCES SQUARE(NAME),"
+            + "CIRCLESHAPENAME VARCHAR(128), FOREIGN KEY (CIRCLESHAPENAME) REFERENCES CIRCLE(NAME),"
+            + "TRIANGLESHAPENAME VARCHAR(128), FOREIGN KEY (TRIANGLESHAPENAME) REFERENCES TRIANGLE(NAME),"
+            + "RECTANGLESHAPENAME VARCHAR(128), FOREIGN KEY (RECTANGLESHAPENAME) REFERENCES RECTANGLE(NAME),"
+            + "BATCHSHAPENAME VARCHAR(128), FOREIGN KEY (BATCHSHAPENAME) REFERENCES BATCH(BATCHNAME),"
+            + "PRIMARY KEY (DRAWINGBOARDMEMBERSNAME, SHAPE)"
+            + ")";
         String driver = "org.apache.derby.jdbc.EmbeddedDriver";
         String protocol = "jdbc:derby:";
-        try{
+        try {
             Class.forName(driver).newInstance();
-            Connection connection = DriverManager.getConnection(protocol + "drawingAppDB;create=true");
+            Connection connection = DriverManager
+                .getConnection(protocol + "drawingAppDB;create=true");
             Statement statement = connection.createStatement();
+
+//            statement.execute(cleanupTableDrawingMembersString);
+//            statement.execute(cleanupTableDrawingString);
+//            statement.execute(cleanupTableSquareString);
+//            statement.execute(cleanupTableCircleString);
+//            statement.execute(cleanupTableTriangleString);
+//            statement.execute(cleanupTableRectangleString);
+//            statement.execute(cleanupTableBatchMembers);
+//            statement.execute(cleanupTableBatch);
+
             statement.execute(createTableSquareString);
             statement.execute(createTableCircleString);
             statement.execute(createTableTriangleString);
             statement.execute(createTableRectangleString);
-            statement.execute(createTableBatch);
-            statement.execute(createTableBatchMembers);
+            statement.execute(createTableBatchString);
+            statement.execute(createTableBatchMembersString);
+            statement.execute(createTableDrawing);
+            statement.execute(createTableDrawingMembers);
             connection.close();
-        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | SQLException e) {
+        }
+        catch (IllegalAccessException | InstantiationException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
 
     @AfterClass
     public static void cleanupDB() throws SQLException {
+        String cleanupTableDrawingMembersString = "DROP TABLE DRAWINGBOARDMEMBERS";
+        String cleanupTableDrawingString = "DROP TABLE DRAWINGBOARD";
         String cleanupTableSquareString = "DROP TABLE SQUARE";
         String cleanupTableCircleString = "DROP TABLE CIRCLE";
         String cleanupTableTriangleString = "DROP TABLE TRIANGLE";
@@ -67,6 +100,8 @@ public class AppTest
 
         Connection connection = DriverManager.getConnection("jdbc:derby:drawingAppDB");
         Statement statement = connection.createStatement();
+        statement.execute(cleanupTableDrawingMembersString);
+        statement.execute(cleanupTableDrawingString);
         statement.execute(cleanupTableSquareString);
         statement.execute(cleanupTableCircleString);
         statement.execute(cleanupTableTriangleString);
@@ -229,5 +264,19 @@ public class AppTest
         commandTriangle.execute();
         Command commandRectangle = new DrawRectangle(testBoard, "rectangle", new Coordinates(1, 2), new Coordinates(5, 5));
         commandRectangle.execute();
+    }
+
+    @Test
+    public void testDrawing(){
+        DrawingBoardDAO drawingBoardDAO = new DrawingBoardDAO();
+        DrawingBoard drawingBoard = new DrawingBoard("testBoard");
+        Circle shape = new Circle("cercle2", new Coordinates(1,1), 3);
+        Square square = new Square("square2", new Coordinates(2,2), 3);
+        drawingBoard.addShape(shape);
+        drawingBoard.addShape(square);
+        drawingBoardDAO.create(drawingBoard);
+        DrawingBoard result = drawingBoardDAO.find("testBoard");
+        result.getShapeList();
+        drawingBoardDAO.delete("testBoard");
     }
 }
