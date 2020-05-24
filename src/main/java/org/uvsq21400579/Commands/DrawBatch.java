@@ -20,15 +20,13 @@ public class DrawBatch extends DrawShape{
 
   @Override
   public void execute() {
-    int index = 0;
     List<Shape> list = this.drawingBoard.getShapeList();
     Batch batch = new Batch(this.name);
-    for (Shape shape : list) {
-      index += 1;
-      for (String name : batchList) {
-        if (name.matches(shape.getName())) {
-          batch.addShape(shape);
-          list.remove(index);
+    for (int i = 0; i < list.size(); i++) {
+      for (int j = 0; j < batchList.length ; j++) {
+        if (list.get(i).getName().equals(batchList[j])) {
+          batch.addShape(list.get(i));
+          list.remove(i);
         }
       }
     }

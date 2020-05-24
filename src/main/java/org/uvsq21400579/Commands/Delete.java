@@ -16,7 +16,7 @@ public class Delete implements Command {
   }
 
   @Override
-  public void execute() {
+  public void execute() { //TODO BROKEN
     int index = 0;
     List<Shape> list = this.drawingBoard.getShapeList();
     for(Shape shapes : list){

@@ -18,6 +18,10 @@ public class DrawingBoard {
     return Collections.unmodifiableList(shapeList);
   }
 
+  public void setShapeList(List<Shape> shapeList) {
+    this.shapeList = shapeList;
+  }
+
   public String getName(){
     return this.name;
   }

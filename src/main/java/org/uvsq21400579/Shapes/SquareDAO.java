@@ -3,6 +3,7 @@ package org.uvsq21400579.Shapes;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import org.uvsq21400579.Coordinates;
 import org.uvsq21400579.DAO;
 
@@ -20,7 +21,11 @@ public class SquareDAO extends DAO<Square> {
       insertSquare.setString(3, object.topLeft.getY());
       insertSquare.setString(4, object.getSide());
       insertSquare.executeUpdate();
-    } catch (SQLException throwables) {
+    }
+    catch (SQLIntegrityConstraintViolationException e){
+      System.out.println("Shape already exists ignoring");
+    }
+    catch (SQLException throwables) {
       throwables.printStackTrace();
     }
     this.disconnect();
