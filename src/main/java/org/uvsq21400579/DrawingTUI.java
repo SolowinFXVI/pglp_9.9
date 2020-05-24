@@ -19,15 +19,6 @@ public class DrawingTUI {
   DAO dao;
 
   /**
-   * DrawingTUI constructor.
-   */
-  public DrawingTUI() {
-    this.scanner = new Scanner(System.in, "UTF-8");
-    this.drawingBoard = new DrawingBoard("Main");
-    this.dao = DAOFactory.getDrawingBoardDAO();
-  }
-
-  /**
    * Command pattern nextCommand.
    * @return Command.
    */

@@ -15,8 +15,6 @@ public abstract class DAO<T> {
 
   public abstract void delete(String key);
 
-  Statement statement = null;
-
   /**
    * Connect to the embedded database.
    */
